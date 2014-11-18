@@ -12,11 +12,10 @@ int main(void) {
 	/* Init correct ebi banks */
 	ebi_setup();
 
-	load_kernel(1, id_kernel, 18);
 
 
 	for (int i = 0; i < 3000; i++) {
-		uint16_t data = 0b111110000000000;
+		uint16_t data = 0xFFFF;
 		int write_address = SRAM_BASE_ADDR + (i << 1);
 		*(uint16_t*)write_address = data;
 	}
@@ -25,6 +24,7 @@ int main(void) {
 	int i = 20;
 	while (1) {
 		//load_constant(0, i);
+		load_kernel(1, id_kernel, 18);
 
 		start_kernel(1, 5000);
 		flip_framebuffer();
