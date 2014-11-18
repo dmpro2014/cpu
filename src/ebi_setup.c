@@ -83,7 +83,7 @@ void ebi_setup() {
 	GPIO_PinModeSet( gpioPortF, 7, gpioModePushPull, 0 );
 
 	/* Kernel finished flag */
-	GPIO_PinModeSet( gpioPortD, 2, gpioModePushPull, 0 );
+	GPIO_PinModeSet( gpioPortD, 2, gpioModeInput, 0 );
 
 	/* Flip FB flag */
 	GPIO_PinModeSet( gpioPortC, 4, gpioModePushPull, 0 );
