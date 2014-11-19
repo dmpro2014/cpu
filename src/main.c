@@ -26,29 +26,26 @@ int main(void) {
 	load_kernel(301, flip, 20);
 	load_kernel(350, srl, 17);
     load_kernel(400, test_64_width, 19);
+	load_kernel(500, draw_square, 40);
 
 	/* Infinite loop */
+	int x = 10;
+	int y = 10;
+	int xhi = 40;
+	int yhi = 40;
+
+	load_constant(0, x);
+	load_constant(1, y);
+	load_constant(2, xhi);
+	load_constant(3, yhi);
+
 	int i = 0;
 	while (1) {
-		load_constant(2, i);
-		load_constant(1, rgb(0, 255, 255));
-		//load_kernel(1, test_kernel, 15);
-	    //load_kernel(1, id_kernel, 23);
-		//load_kernel(1, square_kernel, 35);
 
+		start_kernel(500, 1024);
 
-		start_kernel(350, 1024);
-
-		//start_kernel(101, 512);
-
-		//start_kernel(201, 512);
-
-		flip_framebuffer();
-		if (i % 2) {
-			load_constant(0, 4096);
-		} else {
-			load_constant(0, 0);
-		}
+		//x = (x + 1) % 64;
+		//xhi = (xhi + 1) % 64;
 
 		i++;
 		if (i==4) i = 0;

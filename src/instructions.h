@@ -184,4 +184,41 @@ uint32_t test_64_width[] = {
         0x00000000 // nop
 };
 
+uint32_t draw_square[] = {
+	    0x00000000, ///-- ; $8 -> x value
+	    0x00000000, //-- ; $9 -> y value
+	    0x00000000, //-- ;
+	    0x00000000, //-- ; $12 -> near, x value
+	    0x00000000, //-- ; $13 -> near, y value
+	    0x00000000, //-- ; $14 -> far, x value
+	    0x00000000, //-- ; $15 -> far, y value
+	    0x00000000, //-- ;
+	    0x080c0000, //-- ldc $12, 0
+	    0x080d0001, //-- ldc $13, 1
+	    0x080e0002, //-- ldc $14, 2
+	    0x080f0003, //-- ldc $15, 3
+	    0x00000000, //-- ;
+	    0x000239c1, //-- srl $7, $2, 7 ; load y value
+	    0x00015a40, //-- sll $11, $1, 9 ; Load shifted hi value
+	    0x00eb3804, //-- add $7, $7, $11 ; Stitch together hi and low
+	    0x00000000, //-- ;
+	    0x0408003f, //-- addi $8, $0, 63
+	    0x01024006, //-- and $8, $8, $id_lo ; load x value
+	    0x04060000, //-- addi $mask, $0, 0 ; Disable masking
+	    0x04052893, //-- addi $lsu_data, $0, 0b0010100010010011 ; Set default color
+	    0x00000000, //-- ;
+	    0x010c3003, //-- slt $mask, $8, $12 ; x < near
+	    0x80ed3003, //-- ? slt $mask, $7, $13 ; y < near
+	    0x00000000, //-- ;
+	    0x81c83003, //-- ? slt $mask, $14, $8 ; far < x
+	    0x81e73003, //-- ? slt $mask, $15, $7 ; far < y
+	    0x00000000, //-- ;
+	    0x8405f800, //-- ? addi $5, $0, 0b1111100000000000 ; red
+	    0x00000000, //-- ;
+	    0x00011804, //-- add $address_hi, $0, $id_hi
+	    0x00022004, //-- add $address_lo, $0, $id_lo
+	    0x10000000, //-- sw
+	    0x40000000 //- thread_finished
+};
+
 #endif /* INSTRUCTIONS_H_ */
