@@ -25,6 +25,7 @@ int main(void) {
 	load_kernel(201, constants, 17);
 	load_kernel(301, flip, 20);
 	load_kernel(350, srl, 17);
+    load_kernel(400, test_64_width, 19);
 
 	/* Infinite loop */
 	int i = 0;

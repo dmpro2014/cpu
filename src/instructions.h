@@ -162,4 +162,26 @@ uint32_t srl[] = {
 		0x00000000 // nop
 };
 
+uint32_t test_64_width[] = {
+        0x00000000, // nop
+        0x00000000, // nop
+        0x040507ff, // addi $5, $0, 0b0000011111111111 ; load red
+        0x00022004, // add $4, $0, $2 ; setup address
+        0x04070040, // addi $7, $0, 0b0000000001000000 ;
+        0x00e23006, // and $6, $7, $2 ; enable maskin if id % 64
+        0x8405f81f, // ? addi $5, $0, 0b1111100000011111 ; load green conditionally
+        0x10000000, // sw
+        0x40000000, // thread_finished
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000, // nop
+        0x00000000 // nop
+};
+
 #endif /* INSTRUCTIONS_H_ */
