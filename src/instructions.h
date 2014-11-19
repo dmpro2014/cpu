@@ -6,7 +6,7 @@
 uint32_t square_kernel[] = {
 		0x00000000,
 		0x00000000,
-		0x08090000, // ldc $9, 0 ; x & y offset
+		0x08090000, // ldc $9, 2 ; x & y offset
 		0x000239c1, // srl $7, $2, 7 ; load y value
 		0x00015a40, // sll $11, $1, 9 ; Load shifted hi value
 		0x00eb3804, // add $7, $7, $11 ; Stitch together hi and low
@@ -103,7 +103,49 @@ uint32_t led_kernel[] = {
 uint32_t constants[] = {
 		0x00000000, // nop
 		0x00000000, // nop
-		0x08050000, // ldc $5, 0
+		0x08050001, // ldc $5, 1
+		0x00011804, // add $3, $0, $1
+		0x00022004, // add $4, $0, $2
+		0x10000000, // sw
+		0x40000000, // thread_finished
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000 // nop
+};
+
+uint32_t flip[] = {
+		0x00000000,
+		0x00000000,
+		0x08070000, // ldc $7, 0 ; Load framebuffer offset
+		0x00e22004, // add $4, $7, $2 ; Setup write address
+		0x00073003, // slt $6, $0, $7 ; Enable masking
+		0x00002804, // add $5, $0, $0 ; Reset register
+		0x840507ff, // ? addi $5, $0, 0b0000011111111111 ; Conditionally write red
+		0x10000000, // sw
+		0x40000000, // thread_finished
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000, // nop
+		0x00000000 // nop
+};
+
+uint32_t srl[] = {
+		0x00000000,
+		0x00000000,
+		0x00022981, // srl $5, $2, 3
 		0x00011804, // add $3, $0, $1
 		0x00022004, // add $4, $0, $2
 		0x10000000, // sw

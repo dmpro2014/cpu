@@ -21,18 +21,33 @@ int main(void) {
 	}
 
 	load_kernel(1, square_kernel, 33);
+	load_kernel(101, id_kernel, 23);
+	load_kernel(201, constants, 17);
+	load_kernel(301, flip, 20);
+	load_kernel(350, srl, 17);
 
 	/* Infinite loop */
 	int i = 0;
 	while (1) {
-		load_constant(0, i);
+		load_constant(2, i);
+		load_constant(1, rgb(0, 255, 255));
 		//load_kernel(1, test_kernel, 15);
 	    //load_kernel(1, id_kernel, 23);
 		//load_kernel(1, square_kernel, 35);
 
 
-		start_kernel(1, 128);
-		//flip_framebuffer();
+		start_kernel(350, 1024);
+
+		//start_kernel(101, 512);
+
+		//start_kernel(201, 512);
+
+		flip_framebuffer();
+		if (i % 2) {
+			load_constant(0, 4096);
+		} else {
+			load_constant(0, 0);
+		}
 
 		i++;
 		if (i==4) i = 0;
