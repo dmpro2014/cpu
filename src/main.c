@@ -29,10 +29,11 @@ int main(void) {
 	load_kernel(500, draw_square, 40);
 
 	/* Infinite loop */
+	int cube_width = 30;
 	int x = 10;
 	int y = 10;
-	int xhi = 40;
-	int yhi = 40;
+	int xhi = x + cube_width;
+	int yhi = y + cube_width;
 
 	load_constant(0, x);
 	load_constant(1, y);
@@ -40,14 +41,21 @@ int main(void) {
 	load_constant(3, yhi);
 
 	int i = 0;
+	int direction = 1;
 	while (1) {
-
 		start_kernel(500, 1024);
 
-		//x = (x + 1) % 64;
-		//xhi = (xhi + 1) % 64;
+		load_constant(0, x);
+		load_constant(2, xhi);
 
+		if (x <= 0 || x > (64 - cube_width)) {
+			direction *= -1;
+		}
+
+		x += direction * 2;
+		xhi = x + cube_width;
+
+		for (int i=0; i<200000; i++);
 		i++;
-		if (i==4) i = 0;
 	}
 }
