@@ -314,7 +314,7 @@ uint32_t tunnel_kernel[] = {
 		0x040e0040, // addi $14, $0, 64 ; width & height
 		0x01e23806, // and $7, $15, $id_lo ; x value
 		0x00024181, // srl $8, $id_lo, 6 ; y value
-		0x040507ff, // addi $lsu_data, $0, 0b0000011111111111 ; Default to red
+		0x0405f800, // addi $lsu_data, $0, 0b1111100000000000 ; Default to red
 		0x00006004, // add $12, $0, $0 ; shadow mask - mask is write only
 		0x080d000a, // ldc $13, 10 ; Offset from edges
 		0x01cd7005, // sub $14, $14, $13 ; offset from opposite edges
@@ -426,7 +426,7 @@ uint32_t tunnel_kernel[] = {
 		0x016a5005, // sub $10, $11, $10
 		0x018a6007, // or $12, $12, $10
 		0x000c3004, // add $mask, $0, $12 ; Store mask value
-		0x8405ffff, // ? addi $lsu_data, $0, 0xffff ; color, blue?
+		0x84050000, // ? addi $lsu_data, $0, 0x0000 ; color, blue?
 		0x080a0005, // ldc $10, 5
 		0x01422004, // add $address_lo, $10, $id_lo
 		0x10000000, // sw
