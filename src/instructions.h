@@ -189,9 +189,7 @@ uint32_t draw_square[] = {
 	    0x080d0001, //-- ldc $13, 1
 	    0x080e0002, //-- ldc $14, 2
 	    0x080f0003, //-- ldc $15, 3
-	    0x000239c1, //-- srl $7, $2, 7 ; load y value
-	    0x00015a40, //-- sll $11, $1, 9 ; Load shifted hi value
-	    0x00eb3804, //-- add $7, $7, $11 ; Stitch together hi and low
+	    0x00023981, //-- srl $7, $2, 6 ; load y value
 	    0x0408003f, //-- addi $8, $0, 63
 	    0x01024006, //-- and $8, $8, $id_lo ; load x value
 	    0x04060000, //-- addi $mask, $0, 0 ; Disable masking
