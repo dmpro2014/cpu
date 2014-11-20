@@ -7,7 +7,7 @@ void start_kernel(uint16_t kernel_address, uint16_t number_of_batches) {
 	*(uint16_t *)write_address = number_of_batches;
 
 	while(1) {
-		if (GPIO_PinInGet( gpioPortD, 2 ) == 1) {
+		if (GPIO_PinInGet( gpioPortC, 2 ) == 1) {
 			return;
 		}
 	}
@@ -20,7 +20,7 @@ void load_kernel(uint16_t address, uint32_t *instructions, int kernel_length) {
 }
 
 void flip_framebuffer() {
-	GPIO_PinOutToggle( gpioPortC, 4 );
+	GPIO_PinOutToggle( gpioPortC, 1 );
 }
 
 void load_constant(uint16_t address, uint16_t data) {

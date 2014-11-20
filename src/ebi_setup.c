@@ -83,10 +83,10 @@ void ebi_setup() {
 	GPIO_PinModeSet( gpioPortF, 7, gpioModePushPull, 0 );
 
 	/* Kernel finished flag */
-	GPIO_PinModeSet( gpioPortD, 2, gpioModeInput, 0 );
+	GPIO_PinModeSet( gpioPortC, 2, gpioModeInput, 0 );
 
 	/* Flip FB flag */
-	GPIO_PinModeSet( gpioPortC, 4, gpioModePushPull, 0 );
+	GPIO_PinModeSet( gpioPortC, 1, gpioModePushPull, 0 );
 
 	/* --------------------------------------------------------- */
 	/* FPGA, Bank 0, Base Address 0x80000000                     */
