@@ -236,90 +236,198 @@ uint32_t draw_border[] = {
 		0x040e0040, // addi $14, $0, 64 ; width & height
 		0x01e23806, // and $7, $15, $id_lo ; x value
 		0x00024181, // srl $8, $id_lo, 6 ; y value
-		0x00000000, //
-		0x00000000, // ; Load rendered color
 		0x00022004, // add $address_lo, $0, $id_lo
 		0x20000000, // lw
 		0x00057804, // add $15, $0, $lsu_data ; Cache for later - might not needed
-		0x00000000, //
 		0x040507ff, // addi $lsu_data, $0, 0b0000011111111111 ; Default to red
-		0x00000000, //
 		0x080d000a, // ldc $13, 10 ; Offset from edges
 		0x01cd7005, // sub $14, $14, $13 ; offset from opposite edges
-		0x00000000, //
 		0x00003004, // add $mask, $0, $0 ; init mask
 		0x00006004, // add $12, $0, $0 ; shadow mask - mask is write only
-		0x00000000, //
-		0x00000000, // ; Draw left line of box
 		0x00ed4805, // sub $9, $7, $13 ; equal
 		0x01205003, // slt $10, $9, $0 ; diff less than zero
 		0x00095803, // slt $11, $0, $9 ; diff greater than zero
 		0x014b5007, // or $10, $10, $11
 		0x040b0001, // addi $11, $0, 1
 		0x016a5005, // sub $10, $11, $10
-		0x00000000, //
 		0x01a85803, // slt $11, $13, $8
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x010e5803, // slt $11, $8, $14
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x018a3007, // or $mask, $12, $10
 		0x018a6007, // or $12, $12, $10
-		0x00000000, //
-		0x00000000, // ; Draw right line of box
 		0x00ee4805, // sub $9, $7, $14 ; equal
 		0x01205003, // slt $10, $9, $0 ; diff less than zero
 		0x00095803, // slt $11, $0, $9 ; diff greater than zero
 		0x014b5007, // or $10, $10, $11
 		0x040b0001, // addi $11, $0, 1
 		0x016a5005, // sub $10, $11, $10
-		0x00000000, //
 		0x01a85803, // slt $11, $13, $8
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x010e5803, // slt $11, $8, $14
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x018a3007, // or $mask, $12, $10
 		0x018a6007, // or $12, $12, $10
-		0x00000000, //
-		0x00000000, // ; Draw upper line of box
 		0x010d4805, // sub $9, $8, $13 ; equal
 		0x01205003, // slt $10, $9, $0 ; diff less than zero
 		0x00095803, // slt $11, $0, $9 ; diff greater than zero
 		0x014b5007, // or $10, $10, $11
 		0x040b0001, // addi $11, $0, 1
 		0x016a5005, // sub $10, $11, $10
-		0x00000000, //
 		0x01a75803, // slt $11, $13, $7 ; Check x-offset
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x018a3007, // or $mask, $12, $10
 		0x018a6007, // or $12, $12, $10
-		0x00000000, //
-		0x00000000, // ; Draw lower line of box
 		0x010e4805, // sub $9, $8, $14 ; equal
 		0x01205003, // slt $10, $9, $0 ; diff less than zero
 		0x00095803, // slt $11, $0, $9 ; diff greater than zero
 		0x014b5007, // or $10, $10, $11
 		0x040b0001, // addi $11, $0, 1
 		0x016a5005, // sub $10, $11, $10
-		0x00000000, //
 		0x01a75803, // slt $11, $13, $7 ; Check x-offset
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
 		0x014b5006, // and $10, $10, $11
-		0x00000000, //
 		0x018a3007, // or $mask, $12, $10
 		0x018a6007, // or $12, $12, $10
-		0x00000000, //
 		0x800f2804, // ? add $lsu_data, $0, $15 ; alpha
+		0x10000000, // sw
 		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x00000000, //
+		0x40000000 // thread_finished
+};
+
+uint32_t tunnel_kernel[] = {
+		0x040f003f, // addi $15, $0, 0b111111 ; 63 bitmask
+		0x040e0040, // addi $14, $0, 64 ; width & height
+		0x01e23806, // and $7, $15, $id_lo ; x value
+		0x00024181, // srl $8, $id_lo, 6 ; y value
+		0x040507ff, // addi $lsu_data, $0, 0b0000011111111111 ; Default to red
+		0x00006004, // add $12, $0, $0 ; shadow mask - mask is write only
+		0x080d000a, // ldc $13, 10 ; Offset from edges
+		0x01cd7005, // sub $14, $14, $13 ; offset from opposite edges
+		0x00ed4805, // sub $9, $7, $13 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a85803, // slt $11, $13, $8
+		0x014b5006, // and $10, $10, $11
+		0x010e5803, // slt $11, $8, $14
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x00ee4805, // sub $9, $7, $14 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a85803, // slt $11, $13, $8
+		0x014b5006, // and $10, $10, $11
+		0x010e5803, // slt $11, $8, $14
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x010d4805, // sub $9, $8, $13 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a75803, // slt $11, $13, $7 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x010e4805, // sub $9, $8, $14 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a75803, // slt $11, $13, $7 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x040e0040, // addi $14, $0, 64 ; width & height
+		0x080d000b, // ldc $13, 11 ; Offset from edges
+		0x01cd7005, // sub $14, $14, $13 ; offset from opposite edges
+		0x00ed4805, // sub $9, $7, $13 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a85803, // slt $11, $13, $8
+		0x014b5006, // and $10, $10, $11
+		0x010e5803, // slt $11, $8, $14
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x00ee4805, // sub $9, $7, $14 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a85803, // slt $11, $13, $8
+		0x014b5006, // and $10, $10, $11
+		0x010e5803, // slt $11, $8, $14
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x010d4805, // sub $9, $8, $13 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a75803, // slt $11, $13, $7 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x010e4805, // sub $9, $8, $14 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x01a75803, // slt $11, $13, $7 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x00ee5803, // slt $11, $7, $14 ; Check x-offset
+		0x014b5006, // and $10, $10, $11
+		0x018a6007, // or $12, $12, $10
+		0x00e84805, // sub $9, $7, $8 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x018a6007, // or $12, $12, $10
+		0x040d003f, // addi $13, $0, 0b111111 ; 63 bitmask
+		0x01a87005, // sub $14, $13, $8 ; negative y value
+		0x01c74805, // sub $9, $14, $7 ; equal
+		0x01205003, // slt $10, $9, $0 ; diff less than zero
+		0x00095803, // slt $11, $0, $9 ; diff greater than zero
+		0x014b5007, // or $10, $10, $11
+		0x040b0001, // addi $11, $0, 1
+		0x016a5005, // sub $10, $11, $10
+		0x018a6007, // or $12, $12, $10
+		0x000c3004, // add $mask, $0, $12 ; Store mask value
+		0x8405ffff, // ? addi $lsu_data, $0, 0xffff ; color, blue?
+		0x00022004, // add $address_lo, $0, $id_lo
 		0x10000000, // sw
 		0x40000000 // thread_finished
 };

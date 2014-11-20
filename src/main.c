@@ -28,21 +28,23 @@ int main(void) {
 	load_kernel(301, flip, 20);
 	load_kernel(350, srl, 17);
 	load_kernel(400, test_64_width, 19);*/
-	load_kernel(500, draw_square, 40);
-	load_kernel(1, draw_cross, 30);
-	//load_kernel(100, draw_border, 100);
+	//load_kernel(1, draw_cross, 100);
+	load_kernel(200, tunnel_kernel, 150);
+	//load_kernel(500, draw_border, 100);
 
 	int cube_radius = 0;
+	int cube_radius_2 = 16;
 	load_constant(10, cube_radius);
 
 	while (1) {
-		start_kernel(1, 512);
-		for (int i=0; i<200000; i++);
-		start_kernel(100, 512);
+		//start_kernel(1, 512);
+		//start_kernel(500, 512);
+		start_kernel(200, 512);
 
 		cube_radius = (cube_radius + 1) % 32;
-
+		cube_radius_2 = (cube_radius_2 + 1) %32;
 		load_constant(10, 32 - cube_radius);
+		load_constant(11, 32 - cube_radius_2);
 
 		for (int i=0; i<200000; i++);
 	}
