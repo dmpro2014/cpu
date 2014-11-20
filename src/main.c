@@ -22,16 +22,33 @@ int main(void) {
 		*(uint16_t*)write_address = data;
 	}
 
-	load_kernel(1, square_kernel, 33);
+	/*load_kernel(1, square_kernel, 33);
 	load_kernel(101, id_kernel, 23);
 	load_kernel(201, constants, 17);
 	load_kernel(301, flip, 20);
 	load_kernel(350, srl, 17);
-	load_kernel(400, test_64_width, 19);
+	load_kernel(400, test_64_width, 19);*/
 	load_kernel(500, draw_square, 40);
+	load_kernel(1, draw_cross, 30);
+	//load_kernel(100, draw_border, 100);
+
+	int cube_radius = 0;
+	load_constant(10, cube_radius);
+
+	while (1) {
+		start_kernel(1, 512);
+		for (int i=0; i<200000; i++);
+		start_kernel(100, 512);
+
+		cube_radius = (cube_radius + 1) % 32;
+
+		load_constant(10, 32 - cube_radius);
+
+		for (int i=0; i<200000; i++);
+	}
 
 	/* Screensaver cube */
-	int cube_width = 20;
+	/*int cube_width = 20;
 	int x = 20;
 	int y = 10;
 	int xhi = x + cube_width;
@@ -66,5 +83,5 @@ int main(void) {
 		load_constant(3, yhi);
 
 		for (int i=0; i<200000; i++);
-	}
+	}*/
 }
