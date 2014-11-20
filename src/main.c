@@ -35,18 +35,22 @@ int main(void) {
 	int cube_radius = 0;
 	int cube_radius_2 = 16;
 	load_constant(10, cube_radius);
-
+	int fb_offset = 4096;
+	load_constant(5, fb_offset);
 	while (1) {
 		//start_kernel(1, 512);
 		//start_kernel(500, 512);
-		start_kernel(200, 512);
+		start_kernel(200, 1024); // 4096
 
 		cube_radius = (cube_radius + 1) % 32;
 		cube_radius_2 = (cube_radius_2 + 1) %32;
+		fb_offset = 4096 - fb_offset;
 		load_constant(10, 32 - cube_radius);
 		load_constant(11, 32 - cube_radius_2);
+		load_constant(5, fb_offset);
+		flip_framebuffer();
 
-		for (int i=0; i<200000; i++);
+		for (int i=0; i<100000; i++);
 	}
 
 	/* Screensaver cube */

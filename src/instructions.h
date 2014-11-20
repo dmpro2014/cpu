@@ -427,7 +427,8 @@ uint32_t tunnel_kernel[] = {
 		0x018a6007, // or $12, $12, $10
 		0x000c3004, // add $mask, $0, $12 ; Store mask value
 		0x8405ffff, // ? addi $lsu_data, $0, 0xffff ; color, blue?
-		0x00022004, // add $address_lo, $0, $id_lo
+		0x080a0005, // ldc $10, 5
+		0x01422004, // add $address_lo, $10, $id_lo
 		0x10000000, // sw
 		0x40000000 // thread_finished
 };
