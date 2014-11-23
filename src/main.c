@@ -1,10 +1,8 @@
 #include "em_device.h"
 #include "em_chip.h"
 
-#include "ebi_setup.h"
 #include "instructions.h"
-#include "bus.h"
-#include "colors.h"
+#include "demolicious.h"
 
 int main(void) {
 	/* Chip errata */
@@ -13,44 +11,37 @@ int main(void) {
 	/* Init correct ebi banks */
 	ebi_setup();
 
-	for (int i = 0; i < 4096; i++) {
-		uint16_t data = rgb(0, 0, 255);
-		if (i % 64 < 1 || i % 64 > 62 || i / 64 < 1 || i /64 > 62) {
-			data = rgb(255, 0, 0);
-		}
-		int write_address = SRAM_BASE_ADDR + (i << 1);
-		*(uint16_t*)write_address = data;
-	}
-
-	/*load_kernel(1, square_kernel, 33);
-	load_kernel(101, id_kernel, 23);
-	load_kernel(201, constants, 17);
-	load_kernel(301, flip, 20);
-	load_kernel(350, srl, 17);
-	load_kernel(400, test_64_width, 19);*/
-	//load_kernel(1, draw_cross, 100);
-	load_kernel(200, tunnel_kernel, 150);
-	//load_kernel(500, draw_border, 100);
+	kernel_t cross_kernel = load_kernel(draw_cross);
+	kernel_t tunnel_kernel = load_kernel(draw_tunnel);
+	kernel_t border_kernel = load_kernel(draw_border);
+	kernel_t mem_kernel = load_kernel(test_mem);
 
 	int cube_radius = 0;
 	int cube_radius_2 = 16;
 	load_constant(10, cube_radius);
 	int fb_offset = 4096;
 	load_constant(5, fb_offset);
+	write_data(0, rgb(255, 0, 0));
+	write_data(1, rgb(0, 0, 255));
 	while (1) {
-		//start_kernel(1, 512);
-		//start_kernel(500, 512);
-		start_kernel(200, 1024); // 4096
-
 		cube_radius = (cube_radius + 1) % 32;
-		cube_radius_2 = (cube_radius_2 + 1) %32;
-		fb_offset = 4096 - fb_offset;
-		load_constant(10, 32 - cube_radius);
-		load_constant(11, 32 - cube_radius_2);
-		load_constant(5, fb_offset);
-		flip_framebuffer();
+		cube_radius_2 = (cube_radius_2 + 1) % 32;
 
-		for (int i=0; i<100000; i++);
+		//start_kernel(cross_kernel, 512); // Draw cross
+
+		load_constant(10, 32 - cube_radius_2);
+		//run_kernel(border_kernel, 512); // First border
+		load_constant(11, 32 - cube_radius);
+		//run_kernel(border_kernel, 512); // Second border
+		//run_kernel(tunnel_kernel, 512); // 4096
+
+		run_kernel(mem_kernel, 1024);
+
+		fb_offset = 4096 - fb_offset;
+		load_constant(5, 0);
+		//flip_framebuffer();
+
+		for (int i=0; i<200000; i++);
 	}
 
 	/* Screensaver cube */
